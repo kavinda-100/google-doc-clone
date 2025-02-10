@@ -11,9 +11,11 @@ const DashBoardLayout = async ({
     redirect("/sign-in");
   }
   return (
-    <main className={"container mx-auto flex min-h-screen flex-col p-2"}>
+    <main
+      className={"container relative mx-auto flex min-h-screen flex-col p-2"}
+    >
       <DashBoardHeader />
-      <section className={"flex flex-1 bg-black"}>{children}</section>
+      <section className={"flex flex-1"}>{children}</section>
     </main>
   );
 };
