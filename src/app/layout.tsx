@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import React from "react";
+import TanstackProvider from "../providers/TanstackProvider";
 
 export const metadata: Metadata = {
   title: "Goggle Docs",
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        {children}
-        <Toaster closeButton richColors />
+        <TanstackProvider>
+          {children}
+          <Toaster closeButton richColors />
+        </TanstackProvider>
       </body>
     </html>
   );
