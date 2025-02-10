@@ -6,10 +6,15 @@ const Page = () => {
     <section className={"container mx-auto"}>
       {/*  templates */}
       <section className={"mx-auto my-4 w-full max-w-5xl"}>
+        <h1 className={"mb-3 font-bold text-muted-foreground"}>Create One</h1>
         <CreateNewDoc />
       </section>
       {/*  table */}
-      <section></section>
+      <section className={"mx-auto my-4 w-full max-w-5xl"}>
+        <h1 className={"mb-3 font-bold text-muted-foreground"}>
+          Recent Documents
+        </h1>
+      </section>
     </section>
   );
 };
