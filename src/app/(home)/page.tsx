@@ -1,8 +1,11 @@
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { getUserSession } from "../../server/auth/getUserSession";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getUserSession();
+
   return (
     <main
       className={
@@ -19,9 +22,15 @@ export default function HomePage() {
         height={100}
       />
       <h1 className={"text-4xl font-bold"}>Google Docs Clone</h1>
-      <Button asChild size={"lg"}>
-        <Link href={"/sign-in"}>Get Start</Link>
-      </Button>
+      {session?.user ? (
+        <Button asChild size={"lg"}>
+          <Link href={"/dashboard"}>Dashboard</Link>
+        </Button>
+      ) : (
+        <Button asChild size={"lg"}>
+          <Link href={"/sign-in"}>Get Start</Link>
+        </Button>
+      )}
     </main>
   );
 }
