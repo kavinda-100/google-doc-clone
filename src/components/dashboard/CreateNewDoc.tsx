@@ -4,7 +4,7 @@ import React from "react";
 import { docTemplates } from "../../constans/docsTemplats";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
-import { createNewDoc } from "../../actions/createNewDocActions";
+import { createNewDoc } from "../../actions/DocActions";
 import { toast } from "sonner";
 import DashboardLoader from "../DashboardLoader";
 import { useRouter } from "next/navigation";
