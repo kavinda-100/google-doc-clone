@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SignOutButton from "./auth/SignOutButton";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 const DashBoardHeader = async () => {
   const session = await getUserSession();
@@ -19,7 +20,7 @@ const DashBoardHeader = async () => {
         "container mx-auto flex items-center justify-between gap-5 p-2"
       }
     >
-      <div className={"flex items-center justify-center gap-3"}>
+      <Link href={"/"} className={"flex items-center justify-center gap-3"}>
         <Image
           src={"/doc.svg"}
           alt={"Google-Docs-icon"}
@@ -27,7 +28,7 @@ const DashBoardHeader = async () => {
           height={30}
         />
         <h1 className={"text-xl font-bold"}>Google Docs Clone</h1>
-      </div>
+      </Link>
       <div className={"flex items-center justify-center gap-3"}>
         <p className={"text-xs text-muted-foreground"}>
           Hi, {session?.user?.name}
