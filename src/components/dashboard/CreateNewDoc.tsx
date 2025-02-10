@@ -9,7 +9,7 @@ const CreateNewDoc = () => {
         <div
           className={
             "flex min-h-[150px] min-w-[150px] cursor-pointer flex-col items-center " +
-            "border-0.5 justify-center gap-3 rounded-md border bg-white p-2 shadow-sm transition-all hover:shadow-md"
+            "border-0.5 justify-center gap-3 rounded-md border bg-background p-2 shadow-sm transition-all hover:shadow-md"
           }
           key={`${index}-${template.templateName}`}
         >
