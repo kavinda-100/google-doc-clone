@@ -1,4 +1,5 @@
 export type docTemplatesType = {
+  id: string;
   templateName: string;
   templateContent?: string;
   thumbnail: string;
@@ -6,6 +7,7 @@ export type docTemplatesType = {
 
 export const docTemplates: docTemplatesType[] = [
   {
+    id: "EBnK2fJ4hdbEizXJr6yMwZ1xgTkcCGar",
     templateName: "Blank Document",
     templateContent: `
             <html lang="en">
@@ -18,6 +20,7 @@ export const docTemplates: docTemplatesType[] = [
     thumbnail: "/templates/blank-document.svg",
   },
   {
+    id: "ib2qxQlSquTVC8VD9bIa6PHjW6p9rPiu",
     templateName: "Business Letter",
     templateContent: `
             <html lang="en">
@@ -45,6 +48,7 @@ export const docTemplates: docTemplatesType[] = [
     thumbnail: "/templates/business-letter.svg",
   },
   {
+    id: "WqXaHOig4YJAlz0rDsKWfqNz1L9P8sPS",
     templateName: "Project Proposal",
     templateContent: `
             <html lang="en">
@@ -73,6 +77,7 @@ export const docTemplates: docTemplatesType[] = [
     thumbnail: "/templates/project-proposal.svg",
   },
   {
+    id: "TIrsqSwle5HvJ8xO0WY8Y6LKymRvxzvl",
     templateName: "Cover Letter",
     templateContent: `
             <html lang="en">
@@ -100,6 +105,7 @@ export const docTemplates: docTemplatesType[] = [
     thumbnail: "/templates/cover-letter.svg",
   },
   {
+    id: "F0nZnSRmFyXYpkIFVeiwxUVl4pWpb0uA",
     templateName: "Resume",
     templateContent: `
             <html lang="en">
@@ -133,6 +139,7 @@ export const docTemplates: docTemplatesType[] = [
     thumbnail: "/templates/resume.svg",
   },
   {
+    id: "Ai1yqlG6one2SOz4pdxMBt7oBljjZdmL",
     templateName: "Software Proposal",
     templateContent: `
             <html lang="en">

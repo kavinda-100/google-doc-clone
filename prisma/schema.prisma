@@ -24,6 +24,8 @@ model User {
     updatedAt     DateTime  @updatedAt
     sessions      Session[]
     accounts      Account[]
+    documents     Document[]
+    invites       Invite[]
 }
 
 model Session {
@@ -64,4 +66,28 @@ model Verification {
     expiresAt  DateTime
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
+}
+
+model Document {
+    id        String   @id @default(cuid())
+    userId    String
+    name      String
+    content   String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    invites Invite[]
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Invite {
+    id        String   @id @default(cuid())
+    documentId String  @unique
+    userId    String
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
