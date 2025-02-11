@@ -14,6 +14,7 @@ import {
   ImageIcon,
   ItalicIcon,
   Link2Icon,
+  ListCollapseIcon,
   ListIcon,
   ListOrderedIcon,
   ListTodoIcon,
@@ -55,6 +56,25 @@ import useEditorStore from "../store/useEditorStore";
 import { Separator } from "../components/ui/separator";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
+
+const ToolTipButton = ({
+  children,
+  label,
+}: {
+  children: React.ReactNode;
+  label: string;
+}) => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent className={"border bg-background text-primary"}>
+          <span className={"text-xs"}>{label}</span>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
 
 type ToolBarButtonProps = {
   onClick?: () => void;
@@ -230,14 +250,21 @@ const TextColorButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          className={
-            "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
-          }
-        >
-          <span className={"text-xs"}>A</span>
-          <div className={"h-1 w-full"} style={{ backgroundColor: value }} />
-        </button>
+        <div>
+          <ToolTipButton label={"Text Color"}>
+            <button
+              className={
+                "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+              }
+            >
+              <span className={"text-xs"}>A</span>
+              <div
+                className={"h-1 w-full"}
+                style={{ backgroundColor: value }}
+              />
+            </button>
+          </ToolTipButton>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"border-0 p-0"}>
         <SketchPicker color={value} onChange={onChange} />
@@ -257,16 +284,20 @@ const HighlightColorButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          className={
-            "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
-          }
-        >
-          <HighlighterIcon
-            className={"size-4 font-extrabold"}
-            style={{ color: value }}
-          />
-        </button>
+        <div>
+          <ToolTipButton label={"Highlight"}>
+            <button
+              className={
+                "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+              }
+            >
+              <HighlighterIcon
+                className={"size-4 font-extrabold"}
+                style={{ color: value }}
+              />
+            </button>
+          </ToolTipButton>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"border-0 p-0"}>
         <SketchPicker color={value} onChange={onChange} />
@@ -295,13 +326,17 @@ const LinkButton = () => {
       }}
     >
       <DropdownMenuTrigger asChild>
-        <button
-          className={
-            "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
-          }
-        >
-          <Link2Icon className={"size-4"} />
-        </button>
+        <div>
+          <ToolTipButton label={"Add Link"}>
+            <button
+              className={
+                "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+              }
+            >
+              <Link2Icon className={"size-4"} />
+            </button>
+          </ToolTipButton>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"flex items-center gap-x-2 p-2.5"}>
         <Input
@@ -354,13 +389,17 @@ const ImageButton = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button
-            className={
-              "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
-            }
-          >
-            <ImageIcon className={"size-4"} />
-          </button>
+          <div>
+            <ToolTipButton label={"Add Image"}>
+              <button
+                className={
+                  "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+                }
+              >
+                <ImageIcon className={"size-4"} />
+              </button>
+            </ToolTipButton>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem className={"cursor-pointer"} onClick={onUpload}>
@@ -434,13 +473,17 @@ const AlignButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          className={
-            "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
-          }
-        >
-          <AlignLeftIcon className={"size-4"} />
-        </button>
+        <div>
+          <ToolTipButton label={"Align Text"}>
+            <button
+              className={
+                "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+              }
+            >
+              <AlignLeftIcon className={"size-4"} />
+            </button>
+          </ToolTipButton>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"flex flex-col gap-y-1 p-1"}>
         {alignments.map((alignment, index) => (
@@ -488,13 +531,17 @@ const ListButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          className={
-            "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
-          }
-        >
-          <ListIcon className={"size-4"} />
-        </button>
+        <div>
+          <ToolTipButton label={"List"}>
+            <button
+              className={
+                "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+              }
+            >
+              <ListIcon className={"size-4"} />
+            </button>
+          </ToolTipButton>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {lists.map((list, index) => (
@@ -613,6 +660,71 @@ const FontSizeButton = () => {
   );
 };
 
+const LineHeightButton = () => {
+  const { editor } = useEditorStore();
+
+  const lineHeights = [
+    {
+      label: "Default",
+      value: "normal",
+    },
+    {
+      label: "Single",
+      value: "1",
+    },
+    {
+      label: "1.15",
+      value: "1.15",
+    },
+    {
+      label: "1.5",
+      value: "1.5",
+    },
+    {
+      label: "Double",
+      value: "2",
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <div>
+          <ToolTipButton label={"Line Height"}>
+            <button
+              className={
+                "flex h-7 min-w-7 shrink-0 flex-col items-center justify-center overflow-hidden rounded-sm px-1.5 text-sm hover:bg-neutral-200/80 focus:outline-none"
+              }
+            >
+              <ListCollapseIcon className={"size-4"} />
+            </button>
+          </ToolTipButton>
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className={"flex flex-col gap-y-1 p-1"}>
+        {lineHeights.map((lineHeights, index) => (
+          <button
+            key={`${index}-${lineHeights.label}`}
+            onClick={() =>
+              editor?.chain().focus().setLineHeight(lineHeights.value).run()
+            }
+            className={cn(
+              "flex items-center gap-x-2 rounded-sm px-2 py-1 hover:bg-neutral-200/80",
+              {
+                "bg-neutral-200/80":
+                  editor?.getAttributes("paragraph").lineHeight ===
+                  lineHeights.value,
+              },
+            )}
+          >
+            <span className={"text-xs"}>{lineHeights.label}</span>
+          </button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 const ToolBar = () => {
   const { editor } = useEditorStore();
   const sections: {
@@ -724,7 +836,7 @@ const ToolBar = () => {
       <LinkButton />
       <ImageButton />
       <AlignButton />
-      {/*  Line height */}
+      <LineHeightButton />
       <ListButton />
       <Separator orientation={"vertical"} className={"h-6 bg-neutral-300"} />
       {sections[2]?.map((section, index) => (
