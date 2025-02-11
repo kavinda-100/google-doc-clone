@@ -10,6 +10,13 @@ import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import Image from "@tiptap/extension-image";
 import { ImageResize } from "tiptap-extension-resize-image";
+import Underline from "@tiptap/extension-underline";
+import FontFamily from "@tiptap/extension-font-family";
+import TextStyle from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
 
 import useEditorStore from "../store/useEditorStore";
 
@@ -37,6 +44,20 @@ const Editor = () => {
       TableCell,
       Image,
       ImageResize,
+      Underline,
+      FontFamily,
+      TextStyle,
+      Highlight.configure({ multicolor: true }),
+      Color,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: "https",
+        protocols: ["http", "https"],
+      }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
     ],
     content: `
     <table>
@@ -55,6 +76,27 @@ const Editor = () => {
         </table>
     `,
     onCreate: ({ editor }) => {
+      setEditor(editor);
+    },
+    onDestroy: () => {
+      setEditor(null);
+    },
+    onUpdate: ({ editor }) => {
+      setEditor(editor);
+    },
+    onSelectionUpdate: ({ editor }) => {
+      setEditor(editor);
+    },
+    onTransaction: ({ editor }) => {
+      setEditor(editor);
+    },
+    onFocus: ({ editor }) => {
+      setEditor(editor);
+    },
+    onBlur: ({ editor }) => {
+      setEditor(editor);
+    },
+    onContentError: ({ editor }) => {
       setEditor(editor);
     },
   });
