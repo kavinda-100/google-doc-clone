@@ -1,6 +1,7 @@
 "use client";
 
 import { useEditor, EditorContent } from "@tiptap/react";
+// extensions
 import StarterKit from "@tiptap/starter-kit";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
@@ -17,6 +18,8 @@ import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
+// custom extensions
+import { FontSizeExtension } from "./extensions/FontSizeExtension";
 
 import useEditorStore from "../store/useEditorStore";
 
@@ -58,6 +61,7 @@ const Editor = () => {
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
+      FontSizeExtension,
     ],
     content: `
     <table>
