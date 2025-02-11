@@ -3,6 +3,7 @@
 import React from "react";
 import { type LucideIcon, Undo2Icon } from "lucide-react";
 import { cn } from "../lib/utils";
+import useEditorStore from "../store/useEditorStore";
 
 type ToolBarButtonProps = {
   onClick?: () => void;
@@ -29,6 +30,7 @@ const ToolBarButton = ({
 };
 
 const ToolBar = () => {
+  const { editor } = useEditorStore();
   const sections: {
     label: string;
     icon: LucideIcon;
