@@ -813,7 +813,7 @@ const ToolBar = () => {
   return (
     <div
       className={
-        "flex min-h-[40px] items-center gap-x-0.5 overflow-x-auto rounded-sm bg-[#F1F4F9] px-2.5 py-0.5"
+        "flex min-h-[40px] items-center gap-x-1 overflow-x-auto rounded-sm bg-[#F1F4F9] px-2.5 py-0.5"
       }
     >
       {sections[0]?.map((section, index) => (
