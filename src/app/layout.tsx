@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import { type Metadata } from "next";
 import React from "react";
 import TanstackProvider from "../providers/TanstackProvider";
@@ -12,15 +12,20 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["200", "400", "600"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${inter.className} antialiased`}>
       <body>
         <TanstackProvider>
           {children}
-          <Toaster closeButton richColors />
+          <Toaster closeButton />
         </TanstackProvider>
       </body>
     </html>

@@ -51,7 +51,7 @@ import useEditorStore from "../../../../../store/useEditorStore";
 import { Input } from "../../../../../components/ui/input";
 import { Button } from "../../../../../components/ui/button";
 
-const NavBar = () => {
+const NavBar = ({ id }: { id: string }) => {
   const { editor } = useEditorStore();
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [rows, setRows] = React.useState(0);
@@ -140,7 +140,7 @@ const NavBar = () => {
       <div className={"flex items-center gap-2"}>
         <Image src={"/doc.svg"} alt={"logo"} width={30} height={30} />
         <div className={"flex flex-col"}>
-          <DocumentInput />
+          <DocumentInput id={id} />
           <div className={"flex"}>
             {/*  file */}
             <Menubar
