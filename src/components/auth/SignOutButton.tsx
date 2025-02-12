@@ -30,7 +30,7 @@ const SignOutButton = () => {
     <Button
       onClick={handleSignOut}
       disabled={loading}
-      variant={"ghost"}
+      variant={"outline"}
       className={"w-full"}
     >
       {loading ? <Loader2 className={"size-4 animate-spin"} /> : "Sign out"}

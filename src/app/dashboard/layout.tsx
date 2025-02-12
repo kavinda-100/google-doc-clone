@@ -1,7 +1,6 @@
 import React from "react";
 import { getUserSession } from "../../server/auth/getUserSession";
 import { redirect } from "next/navigation";
-import DashBoardHeader from "../../components/DashBoardHeader";
 
 const DashBoardLayout = async ({
   children,
@@ -14,7 +13,6 @@ const DashBoardLayout = async ({
     <main
       className={"container relative mx-auto flex min-h-screen flex-col p-2"}
     >
-      <DashBoardHeader />
       <section className={"flex flex-1"}>{children}</section>
     </main>
   );
