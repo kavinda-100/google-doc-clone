@@ -50,12 +50,45 @@ import { BsFilePdf, BsFiletypeDoc } from "react-icons/bs";
 import useEditorStore from "../../../../../store/useEditorStore";
 import { Input } from "../../../../../components/ui/input";
 import { Button } from "../../../../../components/ui/button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { renameDoc } from "../../../../../actions/DocActions";
+import { toast } from "sonner";
 
 const NavBar = ({ id }: { id: string }) => {
   const { editor } = useEditorStore();
+  const queryClient = useQueryClient();
+  // for custom table
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [rows, setRows] = React.useState(0);
   const [cols, setCols] = React.useState(0);
+  // for rename document
+  const [docName, setDocName] = React.useState<string>("");
+  const [isDialogForRenameOpen, setIsDialogForRenameOpen] =
+    React.useState(false);
+
+  // rename document mutation
+  const { mutate, isPending: isDocRenamePending } = useMutation({
+    mutationFn: async () => renameDoc({ id, name: docName }),
+    onSuccess: async (data) => {
+      if (data.success) {
+        toast.success(data.message);
+        await queryClient.invalidateQueries({
+          queryKey: ["getDocContent", { id }],
+        });
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Error in renaming document");
+    },
+  });
+  // rename document function
+  const renameDocument = () => {
+    setIsDialogForRenameOpen(false);
+    if (docName.trim() === "") {
+      return;
+    }
+    mutate();
+  };
 
   const insertTable = (rows: number, cols: number) => {
     editor
@@ -203,7 +236,10 @@ const NavBar = ({ id }: { id: string }) => {
                     New Document
                   </MenubarItem>
                   <MenubarSeparator />
-                  <MenubarItem className={"flex items-center gap-2"}>
+                  <MenubarItem
+                    className={"flex items-center gap-2"}
+                    onClick={() => setIsDialogForRenameOpen(true)}
+                  >
                     <FilePenIcon className={"size-3"} />
                     Rename Document
                   </MenubarItem>
@@ -437,6 +473,41 @@ const NavBar = ({ id }: { id: string }) => {
                 variant={"outline"}
               >
                 Insert Table
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Rename document - dialog */}
+        <Dialog
+          open={isDialogForRenameOpen}
+          onOpenChange={setIsDialogForRenameOpen}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Rename the document</DialogTitle>
+            </DialogHeader>
+            <div className={"flex items-center gap-3"}>
+              <Input
+                type={"text"}
+                onChange={(e) => setDocName(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={() => setIsDialogForRenameOpen(false)}
+                variant={"secondary"}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  renameDocument();
+                  setIsDialogForRenameOpen(false);
+                }}
+                variant={"outline"}
+              >
+                {isDocRenamePending ? "Renaming..." : "Rename"}
               </Button>
             </DialogFooter>
           </DialogContent>
