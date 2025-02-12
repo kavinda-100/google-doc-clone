@@ -84,9 +84,9 @@ const DocumentInput = ({ id }: { id: string }) => {
         }}
       />
       {isPending ? (
-        <Loader2Icon className={"animate-spin text-blue-500"} />
+        <Loader2Icon className={"size-4 animate-spin text-blue-500"} />
       ) : (
-        <BsCloudCheck className={"text-blue-500"} />
+        <BsCloudCheck className={"size-4 text-blue-500"} />
       )}
     </div>
   );

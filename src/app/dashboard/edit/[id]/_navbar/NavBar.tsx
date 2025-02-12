@@ -22,6 +22,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -36,6 +37,7 @@ import {
   FileTextIcon,
   GlobeIcon,
   ItalicIcon,
+  Loader2Icon,
   PrinterIcon,
   Redo2Icon,
   RemoveFormattingIcon,
@@ -51,10 +53,15 @@ import useEditorStore from "../../../../../store/useEditorStore";
 import { Input } from "../../../../../components/ui/input";
 import { Button } from "../../../../../components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNewDoc, renameDoc } from "../../../../../actions/DocActions";
+import {
+  createNewDoc,
+  deleteDocument,
+  renameDoc,
+} from "../../../../../actions/DocActions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DashboardLoader from "../../../../../components/DashboardLoader";
+import Link from "next/link";
 
 const NavBar = ({ id }: { id: string }) => {
   const { editor } = useEditorStore();
@@ -68,6 +75,8 @@ const NavBar = ({ id }: { id: string }) => {
   const [docName, setDocName] = React.useState<string>("");
   const [isDialogForRenameOpen, setIsDialogForRenameOpen] =
     React.useState(false);
+  // for delete document
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
   // rename document mutation
   const { mutate, isPending: isDocRenamePending } = useMutation({
@@ -104,6 +113,21 @@ const NavBar = ({ id }: { id: string }) => {
         if (data.success) {
           toast.success(data.message);
           router.push(`/dashboard/edit/${data.docId}`);
+        }
+      },
+    });
+
+  // delete document mutation
+  const { mutate: deleteDocMutate, isPending: isDeleteDocPending } =
+    useMutation({
+      mutationFn: async () => deleteDocument({ id }),
+      onError: (error) => {
+        toast.error(error.message ?? "Error in deleting document");
+      },
+      onSuccess: (data) => {
+        if (data.success) {
+          toast.success(data.message);
+          router.push(`/dashboard`);
         }
       },
     });
@@ -191,7 +215,9 @@ const NavBar = ({ id }: { id: string }) => {
       {isCreateDocPending && <DashboardLoader />}
       <nav className={"flex items-center justify-between pb-1"}>
         <div className={"flex items-center gap-2"}>
-          <Image src={"/doc.svg"} alt={"logo"} width={30} height={30} />
+          <Link href={"/"}>
+            <Image src={"/doc.svg"} alt={"logo"} width={30} height={30} />
+          </Link>
           <div className={"flex flex-col"}>
             <DocumentInput id={id} />
             <div className={"flex"}>
@@ -266,7 +292,10 @@ const NavBar = ({ id }: { id: string }) => {
                       <FilePenIcon className={"size-3"} />
                       Rename Document
                     </MenubarItem>
-                    <MenubarItem className={"flex items-center gap-2"}>
+                    <MenubarItem
+                      className={"flex items-center gap-2"}
+                      onClick={() => setIsDeleteDialogOpen(true)}
+                    >
                       <TrashIcon className={"size-3"} />
                       Delete Document
                     </MenubarItem>
@@ -530,7 +559,49 @@ const NavBar = ({ id }: { id: string }) => {
                   }}
                   variant={"outline"}
                 >
-                  {isDocRenamePending ? "Renaming..." : "Rename"}
+                  {isDocRenamePending ? (
+                    <Loader2Icon className={"size-4 animate-spin"} />
+                  ) : (
+                    "Rename"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          {/* delete document - dialog */}
+          <Dialog
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Delete the document</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete the document?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  onClick={() => setIsDeleteDialogOpen(false)}
+                  variant={"secondary"}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    deleteDocMutate();
+                    setIsDeleteDialogOpen(false);
+                  }}
+                  variant={"destructive"}
+                >
+                  {isDeleteDocPending ? (
+                    <Loader2Icon
+                      className={"size-4 animate-spin text-red-500"}
+                    />
+                  ) : (
+                    "Delete"
+                  )}
                 </Button>
               </DialogFooter>
             </DialogContent>

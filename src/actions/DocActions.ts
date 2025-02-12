@@ -3,6 +3,7 @@
 import { getUserSession } from "../server/auth/getUserSession";
 import { docTemplates } from "../constans/docsTemplats";
 import { db } from "../server/db";
+import { revalidatePath } from "next/cache";
 
 export const getDocContent = async ({ id }: { id: string }) => {
   try {
@@ -109,6 +110,35 @@ export async function renameDoc({ id, name }: { id: string; name: string }) {
     };
   } catch (e: unknown) {
     console.log("Error in renameDoc: ", e);
+    throw new Error("Internal Server Error");
+  }
+}
+
+export async function deleteDocument({ id }: { id: string }) {
+  try {
+    // Check if the user is logged in
+    const session = await getUserSession();
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+    // Check if the document exists
+    const document = await db.document.findUnique({
+      where: { id, userId: session.user.id },
+    });
+    if (!document) {
+      throw new Error("Document not found");
+    }
+    // Delete the document
+    await db.document.delete({
+      where: { id, userId: session.user.id },
+    });
+    revalidatePath("/dashboard", "page");
+    return {
+      success: true,
+      message: "Document deleted successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in deleteDocument: ", e);
     throw new Error("Internal Server Error");
   }
 }
