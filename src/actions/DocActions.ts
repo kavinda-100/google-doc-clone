@@ -5,6 +5,28 @@ import { docTemplates } from "../constans/docsTemplats";
 import { db } from "../server/db";
 import { revalidatePath } from "next/cache";
 
+export async function getDocs() {
+  try {
+    // Check if the user is logged in
+    const session = await getUserSession();
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+    // Get all documents of the user
+    const documents = await db.document.findMany({
+      where: { userId: session.user.id },
+      orderBy: { createdAt: "desc" },
+    });
+    return {
+      success: true,
+      documents,
+    };
+  } catch (e: unknown) {
+    console.log("Error in getDocs: ", e);
+    throw new Error("Internal Server Error");
+  }
+}
+
 export const getDocContent = async ({ id }: { id: string }) => {
   try {
     // Check if the user is logged in

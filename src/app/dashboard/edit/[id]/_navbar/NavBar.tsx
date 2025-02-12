@@ -215,7 +215,7 @@ const NavBar = ({ id }: { id: string }) => {
       {isCreateDocPending && <DashboardLoader />}
       <nav className={"flex items-center justify-between pb-1"}>
         <div className={"flex items-center gap-2"}>
-          <Link href={"/"}>
+          <Link href={"/dashboard"}>
             <Image src={"/doc.svg"} alt={"logo"} width={30} height={30} />
           </Link>
           <div className={"flex flex-col"}>

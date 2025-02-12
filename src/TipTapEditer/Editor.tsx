@@ -106,41 +106,7 @@ const Editor = () => {
         lowlight,
       }),
     ],
-    content: `
-        <p>Here is a TypeScript code:</p>
-        <pre>
-          <code class="language-typescript">
-            const add = (a: number, b: number): number => a + b;
-          </code>
-        </pre>
-        <p>Here is a C# code:</p>
-        <pre>
-          <code class="language-csharp">
-            public class HelloWorld
-            {
-                public static void Main()
-                {
-                    System.Console.WriteLine("Hello, World!");
-                }
-            }
-          </code>
-        </pre>
-        <p>Here is a python code:</p>
-        <pre>
-          <code class="language-python">
-            def fizz_buzz():
-                for i in range(1, 21):
-                    if i % 15 == 0:
-                        print("FizzBuzz")
-                    elif i % 3 == 0:
-                        print("Fizz")
-                    elif i % 5 == 0:
-                        print("Buzz")
-                    else:
-                        print(i)
-          </code>
-        </pre>
-    `,
+    content: "",
     onCreate: ({ editor }) => {
       setEditor(editor);
     },
