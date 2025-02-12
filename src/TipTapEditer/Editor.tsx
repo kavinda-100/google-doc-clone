@@ -37,6 +37,8 @@ import { LineHeightExtension } from "./extensions/LineHeightExtension";
 import { PageBreakExtension } from "./extensions/PageBreakExtension";
 
 import useEditorStore from "../store/useEditorStore";
+import Ruler from "./Ruler";
+import { useRulerStore } from "../store/useRulerStore";
 
 // create a lowlight instance with all languages loaded
 const lowlight = createLowlight(all);
@@ -52,14 +54,16 @@ lowlight.register("java", java);
 
 const Editor = () => {
   const { setEditor } = useEditorStore();
+  const { leftMargin, rightMargin } = useRulerStore();
   const editor = useEditor({
     editorProps: {
       attributes: {
-        style: "padding-left: 56px; padding-right: 56px;",
+        style: `padding-left: ${leftMargin}px; padding-right: ${rightMargin}px;`,
         class:
           "focus:outline-none print:border-0 border bg-white flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
       },
     },
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       TaskList,
@@ -184,6 +188,7 @@ const Editor = () => {
         "size-full overflow-x-auto bg-[#F9FBFD] p-4 print:overflow-visible print:bg-white print:p-0"
       }
     >
+      <Ruler />
       <div
         className={
           "mx-auto flex w-[816px] max-w-max justify-center py-4 print:w-full print:min-w-0 print:py-0"
