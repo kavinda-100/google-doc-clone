@@ -18,6 +18,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import {
+  BoldIcon,
   Command,
   FileIcon,
   FileJsonIcon,
@@ -25,8 +26,16 @@ import {
   FilePlusIcon,
   FileTextIcon,
   GlobeIcon,
+  ItalicIcon,
   PrinterIcon,
+  Redo2Icon,
+  RemoveFormattingIcon,
+  StrikethroughIcon,
+  TableIcon,
+  TextIcon,
   TrashIcon,
+  UnderlineIcon,
+  Undo2Icon,
 } from "lucide-react";
 import { BsFilePdf, BsFiletypeDoc } from "react-icons/bs";
 
@@ -116,8 +125,18 @@ const NavBar = () => {
                 </MenubarTrigger>
                 <MenubarContent className={"print:hidden"}>
                   <MenubarItem className={"flex items-center gap-2"}>
-                    <FileIcon className={"size-3"} />
-                    Save
+                    <Undo2Icon className={"size-3"} />
+                    Undo
+                    <MenubarShortcut className={"flex items-center text-xs"}>
+                      <Command className={"size-3"} />Z
+                    </MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem className={"flex items-center gap-2"}>
+                    <Redo2Icon className={"size-3"} />
+                    Redo
+                    <MenubarShortcut className={"flex items-center text-xs"}>
+                      <Command className={"size-3"} />Y
+                    </MenubarShortcut>
                   </MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
@@ -131,10 +150,26 @@ const NavBar = () => {
                   Insert
                 </MenubarTrigger>
                 <MenubarContent className={"print:hidden"}>
-                  <MenubarItem className={"flex items-center gap-2"}>
-                    <FileIcon className={"size-3"} />
-                    Save
-                  </MenubarItem>
+                  <MenubarSub>
+                    <MenubarSubTrigger className={"flex items-center gap-2"}>
+                      <TableIcon className={"size-3"} />
+                      Table
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        1 x 1
+                      </MenubarItem>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        2 x 2
+                      </MenubarItem>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        3 x 3
+                      </MenubarItem>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        4 x 4
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
                 </MenubarContent>
               </MenubarMenu>
               {/*  format */}
@@ -147,9 +182,56 @@ const NavBar = () => {
                   Format
                 </MenubarTrigger>
                 <MenubarContent className={"print:hidden"}>
+                  <MenubarSub>
+                    <MenubarSubTrigger className={"flex items-center gap-2"}>
+                      <TextIcon className={"size-3"} />
+                      Text
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        <BoldIcon className={"size-3 font-bold"} />
+                        Bold
+                        <MenubarShortcut
+                          className={"flex items-center text-xs"}
+                        >
+                          <Command className={"size-3"} />B
+                        </MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        <ItalicIcon className={"size-3"} />
+                        Italic
+                        <MenubarShortcut
+                          className={"flex items-center text-xs"}
+                        >
+                          <Command className={"size-3"} />I
+                        </MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        <UnderlineIcon className={"size-3"} />
+                        Underline
+                        <MenubarShortcut
+                          className={"flex items-center text-xs"}
+                        >
+                          <Command className={"size-3"} />U
+                        </MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem className={"flex items-center gap-2"}>
+                        <StrikethroughIcon className={"size-3"} />
+                        Strikethrough
+                        <MenubarShortcut
+                          className={"flex items-center text-xs"}
+                        >
+                          <Command className={"size-3"} />S
+                        </MenubarShortcut>
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
                   <MenubarItem className={"flex items-center gap-2"}>
-                    <FileIcon className={"size-3"} />
-                    Save
+                    <RemoveFormattingIcon className={"size-3"} />
+                    Remove Formatting
+                    <MenubarShortcut className={"flex items-center text-xs"}>
+                      <Command className={"size-3"} />\
+                    </MenubarShortcut>
                   </MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
