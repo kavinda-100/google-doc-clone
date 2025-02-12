@@ -303,6 +303,14 @@
       font-weight: 700;
     }
   }
+
+  /* Page Break styles */
+  div[data-page-break="true"] {
+    opacity: 1;
+    border-width: 1px 0;
+    border-style: dashed;
+    border-color: currentColor;
+  }
 }
 
 /* For WebKit browsers (Chrome, Safari) */

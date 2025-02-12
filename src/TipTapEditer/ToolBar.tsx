@@ -61,6 +61,8 @@ import useEditorStore from "../store/useEditorStore";
 import { Separator } from "../components/ui/separator";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
+import { Simulate } from "react-dom/test-utils";
+import load = Simulate.load;
 
 const ToolTipButton = ({
   children,
@@ -844,6 +846,20 @@ const ToolBar = () => {
         isActive: false,
       },
     ],
+    [
+      {
+        label: "Add New Page",
+        icon: PlusIcon,
+        onClick: () => editor?.chain().focus().setPageBreak().run(),
+        isActive: false,
+      },
+      {
+        label: "Remove New Page",
+        icon: MinusIcon,
+        onClick: () => editor?.chain().focus().unsetPageBreak().run(),
+        isActive: false,
+      },
+    ],
   ];
   return (
     <div
@@ -875,6 +891,10 @@ const ToolBar = () => {
       <ListButton />
       <Separator orientation={"vertical"} className={"h-6 bg-neutral-300"} />
       {sections[2]?.map((section, index) => (
+        <ToolBarButton key={`${index}-${section.label}`} {...section} />
+      ))}
+      <Separator orientation={"vertical"} className={"h-6 bg-neutral-300"} />
+      {sections[3]?.map((section, index) => (
         <ToolBarButton key={`${index}-${section.label}`} {...section} />
       ))}
     </div>

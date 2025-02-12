@@ -34,6 +34,7 @@ import { all, createLowlight } from "lowlight";
 // custom extensions
 import { FontSizeExtension } from "./extensions/FontSizeExtension";
 import { LineHeightExtension } from "./extensions/LineHeightExtension";
+import { PageBreakExtension } from "./extensions/PageBreakExtension";
 
 import useEditorStore from "../store/useEditorStore";
 
@@ -92,6 +93,7 @@ const Editor = () => {
         types: ["paragraph", "heading"],
         defaultLineHeight: "normal",
       }),
+      PageBreakExtension,
       Code,
       Subscript,
       Superscript,
