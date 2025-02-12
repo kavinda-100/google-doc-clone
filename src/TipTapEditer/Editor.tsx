@@ -18,11 +18,31 @@ import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
+import Code from "@tiptap/extension-code";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import ts from "highlight.js/lib/languages/typescript";
+import html from "highlight.js/lib/languages/xml";
+import { all, createLowlight } from "lowlight";
 // custom extensions
 import { FontSizeExtension } from "./extensions/FontSizeExtension";
 import { LineHeightExtension } from "./extensions/LineHeightExtension";
 
 import useEditorStore from "../store/useEditorStore";
+
+// create a lowlight instance with all languages loaded
+const lowlight = createLowlight(all);
+
+// This is only an example, all supported languages are already loaded above,
+// but you can also register only specific languages to reduce bundle-size
+lowlight.register("html", html);
+lowlight.register("css", css);
+lowlight.register("js", js);
+lowlight.register("ts", ts);
 
 const Editor = () => {
   const { setEditor } = useEditorStore();
@@ -67,8 +87,30 @@ const Editor = () => {
         types: ["paragraph", "heading"],
         defaultLineHeight: "normal",
       }),
+      Code,
+      Subscript,
+      Superscript,
+      HorizontalRule,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
     ],
     content: `
+      <pre>
+      <code class="language-javascript">
+        for (var i=1; i <= 20; i++)
+        {
+          if (i % 15 == 0)
+            console.log("FizzBuzz");
+          else if (i % 3 == 0)
+            console.log("Fizz");
+          else if (i % 5 == 0)
+            console.log("Buzz");
+          else
+            console.log(i);
+        }
+      </code>
+      </pre>
     <table>
           <tbody>
             <tr>
