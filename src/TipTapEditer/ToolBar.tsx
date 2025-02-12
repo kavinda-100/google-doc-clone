@@ -792,7 +792,7 @@ const ToolBar = () => {
         isActive: editor?.isActive("underline"),
       },
       {
-        label: "Code",
+        label: "Code Line",
         icon: CodeIcon,
         onClick: () => editor?.chain().focus().toggleCode().run(),
         isActive: editor?.isActive("code"),

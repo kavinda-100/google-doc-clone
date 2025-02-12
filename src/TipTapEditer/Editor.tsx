@@ -23,10 +23,13 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import css from "highlight.js/lib/languages/css";
+// lowlight languages
 import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
-import html from "highlight.js/lib/languages/xml";
+import csharp from "highlight.js/lib/languages/csharp";
+import c from "highlight.js/lib/languages/c";
+import python from "highlight.js/lib/languages/python";
+import java from "highlight.js/lib/languages/java";
 import { all, createLowlight } from "lowlight";
 // custom extensions
 import { FontSizeExtension } from "./extensions/FontSizeExtension";
@@ -39,10 +42,12 @@ const lowlight = createLowlight(all);
 
 // This is only an example, all supported languages are already loaded above,
 // but you can also register only specific languages to reduce bundle-size
-lowlight.register("html", html);
-lowlight.register("css", css);
 lowlight.register("js", js);
 lowlight.register("ts", ts);
+lowlight.register("csharp", csharp);
+lowlight.register("c", c);
+lowlight.register("python", python);
+lowlight.register("java", java);
 
 const Editor = () => {
   const { setEditor } = useEditorStore();
@@ -96,21 +101,40 @@ const Editor = () => {
       }),
     ],
     content: `
-      <pre>
-      <code class="language-javascript">
-        for (var i=1; i <= 20; i++)
-        {
-          if (i % 15 == 0)
-            console.log("FizzBuzz");
-          else if (i % 3 == 0)
-            console.log("Fizz");
-          else if (i % 5 == 0)
-            console.log("Buzz");
-          else
-            console.log(i);
-        }
-      </code>
-      </pre>
+        <p>Here is a TypeScript code:</p>
+        <pre>
+          <code class="language-typescript">
+            const add = (a: number, b: number): number => a + b;
+          </code>
+        </pre>
+        <p>Here is a C# code:</p>
+        <pre>
+          <code class="language-csharp">
+            public class HelloWorld
+            {
+                public static void Main()
+                {
+                    System.Console.WriteLine("Hello, World!");
+                }
+            }
+          </code>
+        </pre>
+        <p>Here is a python code:</p>
+        <pre>
+          <code class="language-python">
+            def fizz_buzz():
+                for i in range(1, 21):
+                    if i % 15 == 0:
+                        print("FizzBuzz")
+                    elif i % 3 == 0:
+                        print("Fizz")
+                    elif i % 5 == 0:
+                        print("Buzz")
+                    else:
+                        print(i)
+          </code>
+        </pre>
+        
     <table>
           <tbody>
             <tr>
