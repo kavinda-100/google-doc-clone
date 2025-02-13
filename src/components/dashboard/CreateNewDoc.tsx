@@ -3,26 +3,11 @@
 import React from "react";
 import { docTemplates } from "../../constans/docsTemplats";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
-import { createNewDoc } from "../../actions/DocActions";
-import { toast } from "sonner";
 import DashboardLoader from "../DashboardLoader";
-import { useRouter } from "next/navigation";
+import { useCreateDocs } from "../../hooks/docs/useCreateDocs";
 
 const CreateNewDoc = () => {
-  const router = useRouter();
-  const { mutate, isPending } = useMutation({
-    mutationFn: async ({ id }: { id: string }) => createNewDoc({ id }),
-    onError: (error) => {
-      toast.error(error.message ?? "Error in creating document");
-    },
-    onSuccess: (data) => {
-      if (data.success) {
-        toast.success(data.message);
-        router.push(`/dashboard/edit/${data.docId}`);
-      }
-    },
-  });
+  const { mutate, isPending } = useCreateDocs();
   return (
     <>
       {isPending && <DashboardLoader />}

@@ -52,85 +52,45 @@ import { BsFilePdf, BsFiletypeDoc } from "react-icons/bs";
 import useEditorStore from "../../../../../store/useEditorStore";
 import { Input } from "../../../../../components/ui/input";
 import { Button } from "../../../../../components/ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  createNewDoc,
-  deleteDocument,
-  renameDoc,
-} from "../../../../../actions/DocActions";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import DashboardLoader from "../../../../../components/DashboardLoader";
 import Link from "next/link";
+import { useCreateDocs } from "../../../../../hooks/docs/useCreateDocs";
+import { useRenameDocs } from "../../../../../hooks/docs/useRenameDocs";
+import { useDeleteDocs } from "../../../../../hooks/docs/useDeleteDocs";
 
 const NavBar = ({ id }: { id: string }) => {
   const { editor } = useEditorStore();
-  const queryClient = useQueryClient();
-  const router = useRouter();
   // for custom table
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [rows, setRows] = React.useState(0);
   const [cols, setCols] = React.useState(0);
-  // for rename document
+
+  //* delete document mutation
+  // state
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  // mutation
+  const { mutate: deleteDocMutate, isPending: isDeleteDocPending } =
+    useDeleteDocs({ id });
+
+  //* rename document mutation
+  // state
   const [docName, setDocName] = React.useState<string>("");
   const [isDialogForRenameOpen, setIsDialogForRenameOpen] =
     React.useState(false);
-  // for delete document
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-
-  // rename document mutation
-  const { mutate, isPending: isDocRenamePending } = useMutation({
-    mutationFn: async () => renameDoc({ id, name: docName }),
-    onSuccess: async (data) => {
-      if (data.success) {
-        toast.success(data.message);
-        await queryClient.invalidateQueries({
-          queryKey: ["getDocContent", { id }],
-        });
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message ?? "Error in renaming document");
-    },
-  });
-  // rename document function
+  // mutation
+  const { mutate, isPending: isDocRenamePending } = useRenameDocs({ id });
+  // function
   const renameDocument = () => {
     setIsDialogForRenameOpen(false);
     if (docName.trim() === "") {
       return;
     }
-    mutate();
+    mutate({ id, docName });
   };
 
-  // create new document mutation
+  //* create new document mutation
   const { mutate: CreateDocMutate, isPending: isCreateDocPending } =
-    useMutation({
-      mutationFn: async () => createNewDoc({ id: null }),
-      onError: (error) => {
-        toast.error(error.message ?? "Error in creating document");
-      },
-      onSuccess: (data) => {
-        if (data.success) {
-          toast.success(data.message);
-          router.push(`/dashboard/edit/${data.docId}`);
-        }
-      },
-    });
-
-  // delete document mutation
-  const { mutate: deleteDocMutate, isPending: isDeleteDocPending } =
-    useMutation({
-      mutationFn: async () => deleteDocument({ id }),
-      onError: (error) => {
-        toast.error(error.message ?? "Error in deleting document");
-      },
-      onSuccess: (data) => {
-        if (data.success) {
-          toast.success(data.message);
-          router.push(`/dashboard`);
-        }
-      },
-    });
+    useCreateDocs();
 
   const insertTable = (rows: number, cols: number) => {
     editor
@@ -279,7 +239,7 @@ const NavBar = ({ id }: { id: string }) => {
                     </MenubarSub>
                     <MenubarItem
                       className={"flex items-center gap-2"}
-                      onClick={() => CreateDocMutate()}
+                      onClick={() => CreateDocMutate({ id: null })}
                     >
                       <FilePlusIcon className={"size-3"} />
                       New Document

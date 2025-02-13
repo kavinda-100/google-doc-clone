@@ -4,21 +4,17 @@ import React from "react";
 import { BsCloudCheck } from "react-icons/bs";
 import { cn } from "../../../../../lib/utils";
 import { Input } from "../../../../../components/ui/input";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getDocContent, renameDoc } from "../../../../../actions/DocActions";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { useRenameDocs } from "../../../../../hooks/docs/useRenameDocs";
+import { useGetDocContent } from "../../../../../hooks/docs/useGetDocContent";
 
 const DocumentInput = ({ id }: { id: string }) => {
   const [docName, setDocName] = React.useState<string>("");
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
 
-  const queryClient = useQueryClient();
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["getDocContent", { id }],
-    queryFn: async () => getDocContent({ id }),
-  });
+  //* get doc content hook
+  const { data, isLoading, error } = useGetDocContent(id);
   if (error) {
     toast.error(error.message ?? "Error in fetching document");
   }
@@ -28,32 +24,20 @@ const DocumentInput = ({ id }: { id: string }) => {
     }
   }, [data]);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async () => renameDoc({ id, name: docName }),
-    onSuccess: async (data) => {
-      if (data.success) {
-        toast.success(data.message);
-        await queryClient.invalidateQueries({
-          queryKey: ["getDocContent", { id }],
-        });
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message ?? "Error in renaming document");
-    },
-  });
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
+  //* rename doc hook
+  const { mutate, isPending } = useRenameDocs({ id });
   const saveContent = async () => {
     setIsEditing(false);
     if (docName.trim() === "") {
       return;
     }
-    mutate();
+    mutate({ id, docName });
   };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
   return (
     <div className={"flex items-center gap-2"}>
       <span
