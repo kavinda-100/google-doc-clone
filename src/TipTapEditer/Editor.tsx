@@ -52,7 +52,11 @@ lowlight.register("c", c);
 lowlight.register("python", python);
 lowlight.register("java", java);
 
-const Editor = () => {
+type EditorProps = {
+  content: string | null | undefined;
+};
+
+const Editor = ({ content }: EditorProps) => {
   const { setEditor } = useEditorStore();
   const { leftMargin, rightMargin } = useRulerStore();
   const editor = useEditor({
@@ -106,7 +110,7 @@ const Editor = () => {
         lowlight,
       }),
     ],
-    content: "",
+    content: content ?? "",
     onCreate: ({ editor }) => {
       setEditor(editor);
     },
