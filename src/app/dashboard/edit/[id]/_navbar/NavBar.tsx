@@ -212,7 +212,7 @@ const NavBar = ({ id }: { id: string }) => {
 
   return (
     <>
-      {isCreateDocPending && <DashboardLoader />}
+      {isCreateDocPending && <DashboardLoader className={"min-h-screen"} />}
       <nav className={"flex items-center justify-between pb-1"}>
         <div className={"flex items-center gap-2"}>
           <Link href={"/dashboard"}>
