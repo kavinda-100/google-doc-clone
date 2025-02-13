@@ -164,3 +164,41 @@ export async function deleteDocument({ id }: { id: string }) {
     throw new Error("Internal Server Error");
   }
 }
+
+export async function saveDocContent({
+  id,
+  content,
+}: {
+  id: string;
+  content: string;
+}) {
+  try {
+    // Check if the user is logged in
+    const session = await auth();
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized");
+    }
+    // Check if the document exists
+    const document = await db.document.findFirst({
+      where: { id, userId: session.user.id },
+    });
+    if (!document) {
+      throw new Error("Document not found");
+    }
+    // Update the document content
+    const updatedDoc = await db.document.update({
+      where: { id, userId: session.user.id },
+      data: { content },
+    });
+    if (!updatedDoc) {
+      throw new Error("Error in updating document");
+    }
+    return {
+      success: true,
+      message: "Document content saved successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in saveDocContent: ", e);
+    throw new Error("Internal Server Error");
+  }
+}

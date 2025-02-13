@@ -59,6 +59,7 @@ import { useRenameDocs } from "../../../../../hooks/docs/useRenameDocs";
 import { useDeleteDocs } from "../../../../../hooks/docs/useDeleteDocs";
 import { useGetDocContent } from "../../../../../hooks/docs/useGetDocContent";
 import { toast } from "sonner";
+import { useSaveDocContent } from "../../../../../hooks/docs/useSaveDocContent";
 
 const NavBar = ({ id }: { id: string }) => {
   const { editor } = useEditorStore();
@@ -109,6 +110,15 @@ const NavBar = ({ id }: { id: string }) => {
       setDocName(data.document.name);
     }
   }, [data, isLoading]);
+
+  //* save document content hook
+  const { mutate: saveDocContent, isPending: isSaveDocContentPending } =
+    useSaveDocContent({ isButton: true });
+  // function
+  const handleSaveDocContent = () => {
+    if (!editor) return;
+    saveDocContent({ id, content: editor.getHTML() });
+  };
 
   const insertTable = (rows: number, cols: number) => {
     editor
@@ -218,6 +228,19 @@ const NavBar = ({ id }: { id: string }) => {
                         Save
                       </MenubarSubTrigger>
                       <MenubarSubContent>
+                        <MenubarItem
+                          className={"flex items-center gap-2"}
+                          onClick={handleSaveDocContent}
+                        >
+                          {isSaveDocContentPending ? (
+                            <Loader2Icon className={"size-3 animate-spin"} />
+                          ) : (
+                            <>
+                              <FileIcon className={"size-3"} />
+                              Save
+                            </>
+                          )}
+                        </MenubarItem>
                         <MenubarItem
                           className={"flex items-center gap-2"}
                           onClick={OnSaveDOCX}
