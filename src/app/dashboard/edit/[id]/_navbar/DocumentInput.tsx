@@ -8,8 +8,11 @@ import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { useRenameDocs } from "../../../../../hooks/docs/useRenameDocs";
 import { useGetDocContent } from "../../../../../hooks/docs/useGetDocContent";
+import { useSaveDocContent } from "../../../../../hooks/docs/useSaveDocContent";
+import useEditorStore from "../../../../../store/useEditorStore";
 
 const DocumentInput = ({ id }: { id: string }) => {
+  const { editor } = useEditorStore();
   const [docName, setDocName] = React.useState<string>("");
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
 
@@ -38,39 +41,62 @@ const DocumentInput = ({ id }: { id: string }) => {
     setIsEditing(true);
   };
 
+  //* save document content hook
+  const { mutate: saveDocContent, isPending: isSaveDocContentPending } =
+    useSaveDocContent({ isButton: false });
+  // function
+  const handleSaveDocContent = () => {
+    if (!editor) return;
+    saveDocContent({ id, content: editor.getHTML() });
+  };
+  // useEffect to set up auto-save every 10 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      handleSaveDocContent();
+    }, 25000); // 25 seconds
+
+    return () => clearInterval(interval); // clear interval on component unmount
+  }, [editor]);
+
   return (
     <div className={"flex items-center gap-2"}>
-      <span
-        className={cn(
-          "text-md h-[30px] min-w-[200px] cursor-pointer truncate px-1.5",
-          {
-            hidden: isEditing,
-          },
-        )}
-        onClick={handleEdit}
-      >
-        {isLoading ? "Untitled Document" : data?.document.name}
-      </span>
-      <Input
-        value={docName}
-        disabled={isPending || !isEditing || isLoading}
-        onChange={(e) => setDocName(e.target.value)}
-        className={cn(
-          "text-md h-[30px] w-[200px] outline-none focus:outline-none",
-          {
-            hidden: !isEditing,
-          },
-        )}
-        onKeyDown={async (e) => {
-          if (e.key === "Enter") {
-            await saveContent();
+      {!isEditing ? (
+        <span
+          className={
+            "text-md h-[30px] min-w-[150px] cursor-pointer truncate rounded-md px-1.5 hover:bg-gray-100"
           }
-        }}
-      />
-      {isPending ? (
-        <Loader2Icon className={"size-4 animate-spin text-blue-500"} />
+          onClick={handleEdit}
+        >
+          {isLoading ? "Untitled Document" : data?.document.name}
+        </span>
       ) : (
-        <BsCloudCheck className={"size-4 text-blue-500"} />
+        <Input
+          value={docName}
+          disabled={
+            isPending || !isEditing || isLoading || isSaveDocContentPending
+          }
+          onChange={(e) => setDocName(e.target.value)}
+          className={
+            "text-md h-[30px] min-w-[150px] outline-none focus:outline-none"
+          }
+          onKeyDown={async (e) => {
+            if (e.key === "Enter") {
+              await saveContent();
+            }
+          }}
+        />
+      )}
+
+      {isPending || isSaveDocContentPending ? (
+        <div className={"flex items-center gap-2"}>
+          <Loader2Icon className={"size-4 animate-spin text-blue-500"} />
+          <p className={"text-xs text-muted-foreground"}>Saving...</p>
+        </div>
+      ) : (
+        <div className={"flex items-center gap-2"}>
+          <BsCloudCheck className={"size-4 text-blue-500"} />
+          <p className={"text-xs text-muted-foreground"}>Save</p>
+        </div>
       )}
     </div>
   );
