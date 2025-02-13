@@ -4,42 +4,32 @@ import React from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
-import { authClient } from "../../server/auth/auth-client";
-import type { ErrorContext } from "@better-fetch/fetch";
 import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 const GithubButton = () => {
-  const [loading, setLoading] = React.useState(false);
+  const [isPending, setIsPending] = React.useState(false);
 
   const handleGithubLogin = async () => {
-    await authClient.signIn.social(
-      {
-        provider: "github",
-      },
-      {
-        onRequest: () => {
-          setLoading(true);
-        },
-        onSuccess: async () => {
-          setLoading(false);
-          toast.success("Sign in successfully");
-        },
-        onError: (ctx: ErrorContext) => {
-          setLoading(false);
-          toast.error(ctx.error.message);
-        },
-      },
-    );
+    try {
+      setIsPending(true);
+      await signIn("github", { redirectTo: "/dashboard" });
+    } catch (e: unknown) {
+      console.log("error in github login", e);
+      toast.error("Something went wrong");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
     <Button
       className={"w-full"}
       variant={"outline"}
-      disabled={loading}
-      onClick={handleGithubLogin}
+      onClick={() => handleGithubLogin()}
+      disabled={isPending}
     >
-      {loading ? (
+      {isPending ? (
         <span className={"flex items-center justify-center gap-3"}>
           <Loader2 className={"size-4 animate-spin"} />
           <span>Signing...</span>

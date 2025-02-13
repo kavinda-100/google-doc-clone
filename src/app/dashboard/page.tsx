@@ -1,10 +1,12 @@
 import React from "react";
 import CreateNewDoc from "../../components/dashboard/CreateNewDoc";
 import AllDocuments from "../../components/dashboard/AllDocuments";
+import DashBoardHeader from "../../components/DashBoardHeader";
 
 const Page = () => {
   return (
     <section className={"container mx-auto"}>
+      <DashBoardHeader />
       {/*  templates */}
       <section className={"mx-auto my-4 w-full max-w-5xl"}>
         <h1 className={"mb-3 font-bold text-muted-foreground"}>Create One</h1>

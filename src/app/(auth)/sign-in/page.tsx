@@ -3,13 +3,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
 import Image from "next/image";
 import GithubButton from "../../../components/auth/GithubButton";
-import Link from "next/link";
 
 const SignInPage = () => {
   return (
@@ -28,17 +26,6 @@ const SignInPage = () => {
       <CardContent>
         <GithubButton />
       </CardContent>
-      <CardFooter>
-        <p className={"text-sm"}>
-          Dont&apos;t have an account?{" "}
-          <Link
-            href={"/sign-up"}
-            className={"ml-3 text-blue-400 underline hover:text-blue-600"}
-          >
-            Sign-Up
-          </Link>
-        </p>
-      </CardFooter>
     </Card>
   );
 };

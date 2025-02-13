@@ -1,14 +1,14 @@
 "use server";
 
-import { getUserSession } from "../server/auth/getUserSession";
-import { docTemplates } from "../constans/docsTemplats";
-import { db } from "../server/db";
+import { auth } from "../../auth";
 import { revalidatePath } from "next/cache";
+import { db } from "../server/db";
+import { docTemplates } from "../constans/docsTemplats";
 
 export async function getDocs() {
   try {
     // Check if the user is logged in
-    const session = await getUserSession();
+    const session = await auth();
     if (!session?.user) {
       throw new Error("Unauthorized");
     }
@@ -30,7 +30,7 @@ export async function getDocs() {
 export const getDocContent = async ({ id }: { id: string }) => {
   try {
     // Check if the user is logged in
-    const session = await getUserSession();
+    const session = await auth();
     if (!session?.user) {
       throw new Error("Unauthorized");
     }
@@ -54,8 +54,8 @@ export const getDocContent = async ({ id }: { id: string }) => {
 export async function createNewDoc({ id }: { id: string | null }) {
   try {
     // Check if the user is logged in
-    const session = await getUserSession();
-    if (!session?.user) {
+    const session = await auth();
+    if (!session?.user?.id) {
       throw new Error("Unauthorized");
     }
     if (id) {
@@ -69,7 +69,7 @@ export async function createNewDoc({ id }: { id: string | null }) {
         data: {
           name: document.templateName,
           content: document.templateContent,
-          userId: session.user.id,
+          userId: session.user.id!,
         },
       });
       if (!newDoc) {
@@ -86,7 +86,7 @@ export async function createNewDoc({ id }: { id: string | null }) {
         data: {
           name: "Untitled Document",
           content: "",
-          userId: session.user.id,
+          userId: session.user.id!,
         },
       });
       if (!newDoc) {
@@ -107,7 +107,7 @@ export async function createNewDoc({ id }: { id: string | null }) {
 export async function renameDoc({ id, name }: { id: string; name: string }) {
   try {
     // Check if the user is logged in
-    const session = await getUserSession();
+    const session = await auth();
     if (!session?.user) {
       throw new Error("Unauthorized");
     }
@@ -139,7 +139,7 @@ export async function renameDoc({ id, name }: { id: string; name: string }) {
 export async function deleteDocument({ id }: { id: string }) {
   try {
     // Check if the user is logged in
-    const session = await getUserSession();
+    const session = await auth();
     if (!session?.user) {
       throw new Error("Unauthorized");
     }

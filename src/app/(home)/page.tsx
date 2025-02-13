@@ -1,11 +1,10 @@
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { getUserSession } from "../../server/auth/getUserSession";
+import { auth } from "../../../auth";
 
 export default async function HomePage() {
-  const session = await getUserSession();
-
+  const session = await auth();
   return (
     <main
       className={

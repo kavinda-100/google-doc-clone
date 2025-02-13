@@ -1,11 +1,12 @@
 import React from "react";
-import { getUserSession } from "../../server/auth/getUserSession";
 import { redirect } from "next/navigation";
+import { auth } from "../../../auth";
 
 const DashBoardLayout = async ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
-  const session = await getUserSession();
+  const session = await auth();
+  console.log({ session });
   if (!session?.user) {
     redirect("/sign-in");
   }

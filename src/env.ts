@@ -5,15 +5,10 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
-  BETTER_AUTH_SECRET: z
-    .string({ message: "BETTER_AUTH_SECRET is required" })
-    .min(10),
-  BETTER_AUTH_URL: z.string({ message: "BETTER_AUTH_URL is required" }).url(),
-  GITHUB_CLIENT_ID: z
-    .string({ message: "GITHUB_CLIENT_ID is required" })
-    .min(5),
-  GITHUB_CLIENT_SECRET: z
-    .string({ message: "GITHUB_CLIENT_SECRET is required" })
+  AUTH_SECRET: z.string({ message: "AUTH_SECRET is required" }).min(10),
+  AUTH_GITHUB_ID: z.string({ message: "AUTH_GITHUB_ID is required" }).min(5),
+  AUTH_GITHUB_SECRET: z
+    .string({ message: "AUTH_GITHUB_SECRET is required" })
     .min(5),
 });
 

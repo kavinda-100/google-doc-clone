@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { getUserSession } from "../server/auth/getUserSession";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -11,9 +10,10 @@ import {
 import SignOutButton from "./auth/SignOutButton";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { auth } from "../../auth";
 
 const DashBoardHeader = async () => {
-  const session = await getUserSession();
+  const session = await auth();
   return (
     <header
       className={
@@ -40,10 +40,10 @@ const DashBoardHeader = async () => {
             <Avatar>
               <AvatarImage
                 src={session?.user?.image ?? ""}
-                alt={session?.user?.name}
+                alt={session?.user?.name ?? "user-avatar"}
               />
               <AvatarFallback>
-                {session?.user?.name.charAt(0).toUpperCase()}
+                {session?.user?.name?.charAt(0).toUpperCase() ?? "N/A"}
               </AvatarFallback>
             </Avatar>
             <ChevronDown className={"size-4"} />
