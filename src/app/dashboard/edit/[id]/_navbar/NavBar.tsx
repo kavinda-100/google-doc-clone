@@ -57,6 +57,8 @@ import Link from "next/link";
 import { useCreateDocs } from "../../../../../hooks/docs/useCreateDocs";
 import { useRenameDocs } from "../../../../../hooks/docs/useRenameDocs";
 import { useDeleteDocs } from "../../../../../hooks/docs/useDeleteDocs";
+import { useGetDocContent } from "../../../../../hooks/docs/useGetDocContent";
+import { toast } from "sonner";
 
 const NavBar = ({ id }: { id: string }) => {
   const { editor } = useEditorStore();
@@ -71,6 +73,11 @@ const NavBar = ({ id }: { id: string }) => {
   // mutation
   const { mutate: deleteDocMutate, isPending: isDeleteDocPending } =
     useDeleteDocs({ id });
+  // function
+  const handleDeleteDocument = () => {
+    setIsDeleteDialogOpen(false);
+    deleteDocMutate();
+  };
 
   //* rename document mutation
   // state
@@ -91,6 +98,17 @@ const NavBar = ({ id }: { id: string }) => {
   //* create new document mutation
   const { mutate: CreateDocMutate, isPending: isCreateDocPending } =
     useCreateDocs();
+
+  //* get doc content hook
+  const { data, isLoading, error } = useGetDocContent(id);
+  if (error) {
+    toast.error(error.message ?? "Error in fetching document");
+  }
+  React.useEffect(() => {
+    if (data && !isLoading) {
+      setDocName(data.document.name);
+    }
+  }, [data, isLoading]);
 
   const insertTable = (rows: number, cols: number) => {
     editor
@@ -501,6 +519,7 @@ const NavBar = ({ id }: { id: string }) => {
               </DialogHeader>
               <div className={"flex items-center gap-3"}>
                 <Input
+                  value={docName}
                   type={"text"}
                   onChange={(e) => setDocName(e.target.value)}
                 />
@@ -548,13 +567,7 @@ const NavBar = ({ id }: { id: string }) => {
                 >
                   Cancel
                 </Button>
-                <Button
-                  onClick={() => {
-                    deleteDocMutate();
-                    setIsDeleteDialogOpen(false);
-                  }}
-                  variant={"destructive"}
-                >
+                <Button onClick={handleDeleteDocument} variant={"destructive"}>
                   {isDeleteDocPending ? (
                     <Loader2Icon
                       className={"size-4 animate-spin text-red-500"}

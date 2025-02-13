@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 export const useDeleteDocs = ({ id }: { id: string }) => {
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () => deleteDocument({ id }),
@@ -18,9 +18,9 @@ export const useDeleteDocs = ({ id }: { id: string }) => {
       if (data.success) {
         toast.success(data.message);
         await queryClient.invalidateQueries({
-          queryKey: ["getDocContent", { id }],
+          queryKey: ["all-documents"],
         });
-        router.push(`/dashboard`);
+        router.push("/dashboard");
       }
     },
   });
