@@ -4,7 +4,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getDocs } from "../../actions/DocActions";
 import { Skeleton } from "../ui/skeleton";
-import Link from "next/link";
+import { AllDocumentsColumnsDef } from "./AllDocumentsColumnsDef";
+import { TableComponent } from "../table/TableComponent";
 
 const AllDocuments = () => {
   const { data, isLoading, error } = useQuery({
@@ -19,16 +20,13 @@ const AllDocuments = () => {
   }
   return (
     <section className={"h-full w-full"}>
-      {data?.documents.map((doc) => {
-        return (
-          <Link href={`/dashboard/edit/${doc.id}`} key={doc.id}>
-            <div className={"my-2 rounded-md border border-gray-200 p-2"}>
-              <h3 className={"text-md font-bold"}>{doc.name}</h3>
-              <p className={"text-sm text-gray-500"}>{doc.userId}</p>
-            </div>
-          </Link>
-        );
-      })}
+      <TableComponent
+        columns={AllDocumentsColumnsDef}
+        data={data?.documents ?? []}
+        FilterInputPlaceholder={"Search By Document Name"}
+        NameForFilter={"name"}
+        showExportToExcel={false}
+      />
     </section>
   );
 };
