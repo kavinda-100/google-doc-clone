@@ -202,3 +202,32 @@ export async function saveDocContent({
     throw new Error("Internal Server Error");
   }
 }
+
+export async function deleteAllDocs({ docIds }: { docIds: string[] }) {
+  try {
+    // Check if the user is logged in
+    const session = await auth();
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized");
+    }
+    // Check if all documents exist
+    const documents = await db.document.findMany({
+      where: { id: { in: docIds }, userId: session.user.id },
+    });
+    if (documents.length !== docIds.length) {
+      throw new Error("Document(s) not found");
+    }
+    // Delete all documents
+    await db.document.deleteMany({
+      where: { id: { in: docIds }, userId: session.user.id },
+    });
+    revalidatePath("/dashboard", "page");
+    return {
+      success: true,
+      message: "Documents deleted successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in deleteAllDocs: ", e);
+    throw new Error("Internal Server Error");
+  }
+}

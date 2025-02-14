@@ -28,6 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
+import DeleteAllDocs from "../dashboard/table/DeleteAllDocs";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -52,6 +53,7 @@ export function TableComponent<TData, TValue>({
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -63,17 +65,27 @@ export function TableComponent<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
 
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      rowSelection,
     },
   });
 
+  // Extract selected document IDs
+  const selectedDocIds: string[] = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => (row.original as any).id)
+    .filter(Boolean); // Removes undefined values
+
+  console.log(selectedDocIds);
+
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center gap-2 py-4">
         <Input
           placeholder={FilterInputPlaceholder}
           value={
@@ -113,6 +125,7 @@ export function TableComponent<TData, TValue>({
             Export To Excel
           </Button>
         )}
+        {selectedDocIds.length > 0 && <DeleteAllDocs docIds={selectedDocIds} />}
       </div>
       <div className={"rounded-md border p-3"}>
         <Table>
@@ -181,8 +194,14 @@ export function TableComponent<TData, TValue>({
             Next
           </Button>
         </div>
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} row(s).
+        <div className={"flex justify-between"}>
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredRowModel().rows.length} row(s).
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
         </div>
       </div>
     </div>

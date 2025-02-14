@@ -12,6 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import DeleteDoc from "./DeleteDoc";
 import RenameDoc from "./RenameDoc";
@@ -26,6 +27,28 @@ type AllDocumentsColumnsDefType = {
 };
 
 export const AllDocumentsColumnsDef: ColumnDef<AllDocumentsColumnsDefType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -45,14 +68,14 @@ export const AllDocumentsColumnsDef: ColumnDef<AllDocumentsColumnsDefType>[] = [
     },
   },
   {
-    accessorKey: "userId",
+    accessorKey: "icon",
     header: "",
     cell: () => {
       return <BsFiletypeDoc className={"size-4 fill-blue-500"} />;
     },
   },
   {
-    accessorKey: "id",
+    accessorKey: "docType",
     header: "Type",
     cell: () => {
       return (
