@@ -4,7 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getDocs } from "../../actions/DocActions";
 import { Skeleton } from "../ui/skeleton";
-import { AllDocumentsColumnsDef } from "./AllDocumentsColumnsDef";
+import { AllDocumentsColumnsDef } from "./table/AllDocumentsColumnsDef";
 import { TableComponent } from "../table/TableComponent";
 
 const AllDocuments = () => {

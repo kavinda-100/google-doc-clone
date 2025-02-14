@@ -5,7 +5,13 @@ import { deleteDocument } from "../../actions/DocActions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export const useDeleteDocs = ({ id }: { id: string }) => {
+export const useDeleteDocs = ({
+  id,
+  isNavigate = true,
+}: {
+  id: string;
+  isNavigate?: boolean;
+}) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -20,7 +26,9 @@ export const useDeleteDocs = ({ id }: { id: string }) => {
         await queryClient.invalidateQueries({
           queryKey: ["all-documents"],
         });
-        router.push("/dashboard");
+        if (isNavigate) {
+          router.push("/dashboard");
+        }
       }
     },
   });

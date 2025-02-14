@@ -15,3 +15,4 @@
 -[x] add a button to save the content of the editor to the database
 -[x] auto save the content of the editor to the database
 -[x] if a user leaves the page, ask from user to save the content of the editor to the database
+- [] add delete, rename, file functionality to the table

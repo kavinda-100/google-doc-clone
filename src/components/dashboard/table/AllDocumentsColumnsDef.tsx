@@ -1,18 +1,19 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Button } from "../ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Button } from "../../ui/button";
+import { ArrowUpDown, MoreHorizontal, PencilIcon } from "lucide-react";
 import { BsFiletypeDoc } from "react-icons/bs";
-import { formatDate } from "../../lib/utils";
+import { formatDate } from "../../../lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../ui/dropdown-menu";
 import Link from "next/link";
+import DeleteDoc from "./DeleteDoc";
 
 type AllDocumentsColumnsDefType = {
   name: string;
@@ -90,7 +91,16 @@ export const AllDocumentsColumnsDef: ColumnDef<AllDocumentsColumnsDefType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem className={"cursor-pointer"}>
-              <Link href={`/dashboard/edit/${id}`}>Continue Editing</Link>
+              <Link
+                href={`/dashboard/edit/${id}`}
+                className={"flex items-center gap-3"}
+              >
+                <PencilIcon className={"size-3"} />
+                Continue Editing
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className={"cursor-pointer"}>
+              <DeleteDoc docId={id} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
