@@ -1,7 +1,7 @@
+import DashBoardHeader from "../../components/DashBoardHeader";
 import React from "react";
 import CreateNewDoc from "../../components/dashboard/CreateNewDoc";
 import AllDocuments from "../../components/dashboard/AllDocuments";
-import DashBoardHeader from "../../components/DashBoardHeader";
 
 const Page = () => {
   return (

@@ -3,14 +3,15 @@
 import React from "react";
 import { docTemplates } from "../../constans/docsTemplats";
 import Image from "next/image";
-import DashboardLoader from "../DashboardLoader";
 import { useCreateDocs } from "../../hooks/docs/useCreateDocs";
+import DashboardLoader from "../DashboardLoader";
 
 const CreateNewDoc = () => {
   const { mutate, isPending } = useCreateDocs();
+
   return (
     <>
-      {isPending && <DashboardLoader />}
+      {isPending && <DashboardLoader className={"min-h-screen"} />}
       <div className={"flex w-full flex-wrap items-center justify-start gap-3"}>
         {docTemplates.map((template, index) => (
           <div
