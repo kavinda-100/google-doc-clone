@@ -14,6 +14,7 @@ import {
 } from "../../ui/dropdown-menu";
 import Link from "next/link";
 import DeleteDoc from "./DeleteDoc";
+import RenameDoc from "./RenameDoc";
 
 type AllDocumentsColumnsDefType = {
   name: string;
@@ -101,6 +102,9 @@ export const AllDocumentsColumnsDef: ColumnDef<AllDocumentsColumnsDefType>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem className={"cursor-pointer"}>
               <DeleteDoc docId={id} />
+            </DropdownMenuItem>
+            <DropdownMenuItem className={"cursor-pointer"}>
+              <RenameDoc docId={id} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -16,6 +16,9 @@ export const useRenameDocs = ({ id }: { id: string }) => {
         await queryClient.invalidateQueries({
           queryKey: ["getDocContent", { id }],
         });
+        await queryClient.invalidateQueries({
+          queryKey: ["all-documents"],
+        });
       }
     },
     onError: (error) => {
