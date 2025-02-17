@@ -1,13 +1,16 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-    provider = "prisma-client-js"
-}
+//* for Development use Postgres Local Database
+//* and for Production use MongoDB
 
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
 }
 
 enum Role {
@@ -71,25 +74,27 @@ model VerificationToken {
 }
 
 model Document {
-    id        String   @id @default(cuid())
-    userId    String
-    name      String
-    content   String?
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  content   String?
+
+  invites Invite[]
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    invites Invite[]
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Invite {
-    id        String   @id @default(cuid())
-    documentId String  @unique
-    userId    String
-    expiresAt DateTime
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  documentId String   @unique
+  userId     String
+  expiresAt  DateTime
 
-    document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

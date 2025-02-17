@@ -10,19 +10,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/sign-in",
   },
   callbacks: {
-    async signIn({ user, account }) {
-      // If the user is signing in with oAuth Providers, we don't need to verify their email
-      if (account?.provider !== "credentials") {
-        const dbUser = await db.user.findUnique({
+    async signIn({ user }) {
+      const dbUser = await db.user.findUnique({
+        where: { id: user.id },
+      });
+      if (dbUser && dbUser.emailVerified === null) {
+        await db.user.update({
           where: { id: user.id },
+          data: { emailVerified: new Date() },
         });
-        if (dbUser && !dbUser?.emailVerified) {
-          await db.user.update({
-            where: { id: user.id },
-            data: { emailVerified: new Date() },
-          });
-        }
-        return true;
       }
       return true;
     },
