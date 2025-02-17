@@ -61,8 +61,6 @@ import useEditorStore from "../store/useEditorStore";
 import { Separator } from "../components/ui/separator";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { Simulate } from "react-dom/test-utils";
-import load = Simulate.load;
 
 const ToolTipButton = ({
   children,

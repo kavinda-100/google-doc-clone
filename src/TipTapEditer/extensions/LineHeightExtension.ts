@@ -1,6 +1,5 @@
 import { Extension } from "@tiptap/react";
 import "@tiptap/extension-text-style";
-import { satisfies } from "next/dist/lib/semver-noop";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {

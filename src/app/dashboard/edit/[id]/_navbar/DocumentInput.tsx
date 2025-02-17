@@ -2,7 +2,6 @@
 
 import React from "react";
 import { BsCloudCheck } from "react-icons/bs";
-import { cn } from "../../../../../lib/utils";
 import { Input } from "../../../../../components/ui/input";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
@@ -45,10 +44,11 @@ const DocumentInput = ({ id }: { id: string }) => {
   const { mutate: saveDocContent, isPending: isSaveDocContentPending } =
     useSaveDocContent({ isButton: false });
   // function
-  const handleSaveDocContent = () => {
+  const handleSaveDocContent = React.useCallback(() => {
     if (!editor) return;
     saveDocContent({ id, content: editor.getHTML() });
-  };
+  }, [editor, id, saveDocContent]);
+
   // useEffect to set up auto-save every 10 seconds
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -56,7 +56,7 @@ const DocumentInput = ({ id }: { id: string }) => {
     }, 25000); // 25 seconds
 
     return () => clearInterval(interval); // clear interval on component unmount
-  }, [editor]);
+  }, [handleSaveDocContent]);
 
   return (
     <div className={"flex items-center gap-2"}>
