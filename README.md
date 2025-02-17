@@ -1,4 +1,4 @@
-# Google Docs Clone
+# Google Docs Clone V1.0
 
 ## Used Technologies
 
@@ -19,6 +19,23 @@
 - [x] Document download
 - [x] Document delete
 - [x] Document update
-- [] Document search
+- [x] Document search
 - [x] Document sort
 - [x] Document pagination
+
+# upcoming features
+
+## Google Docs Clone V1.1
+
+### functionalities
+- [x] save the uploaded image in the server
+- [x] insert the uploaded image in the document
+- [x] delete the uploaded image from the server
+- [x] delete the uploaded image from the document
+- [x] update the uploaded image in the document
+- [x] live collaboration
+
+## Preview
+
+![Dashboard](./public/bg-one.png)
+![Editor](./public/bg-two.png)
